@@ -16,6 +16,9 @@ const Movie = db.define('Movie', {
     },
     img: {
         type: DataTypes.STRING
+    },
+    genre_id: {
+        type: DataTypes.BIGINT
     }
 });
 

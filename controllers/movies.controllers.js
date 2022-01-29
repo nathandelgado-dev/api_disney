@@ -97,7 +97,7 @@ const getMovie = async(req, res = response) => {
 }
 
 const createMovie = async(req, res) => {
-    const { creation_data, ranking, characters } = req.body;
+    const { creation_date, ranking, characters } = req.body;
     let { title } = req.body;
     title = title.toLowerCase();
 
@@ -116,7 +116,7 @@ const createMovie = async(req, res) => {
 
         const dataMovie = {
             title,
-            creation_data,
+            creation_date,
             ranking,
             characters
         };
@@ -222,24 +222,45 @@ const deleteMovie = async(req, res) => {
 
 const searchMoviesQuery = async(req, res = response) => {
     //TODO:get character with same name
-    const { title = '', order = '' } = req.query;
-    const { genre } = req.query;
-
+    const { title = '', order } = req.query;
+    const { genre = 0 } = req.query;
     try {
         const movies = await Movie.findAll({
-            where: { title: title },
+            where: {
+                [Op.or]: [
+                    { title: title },
+                    { genre_id: genre }
+                ]
+            }
         })
 
-        if (!movies) {
-            res.status(404).json({
-                msg: 'Not exist these query'
-            })
+        if (!movies.length) {
+            return res.status(404).json({
+                msg: 'Not exist movies with for these query'
+            });
         }
+        //Order query
+        if (order == 'ASC') {
+            const ascMovies = movies.sort((a, b) => new Date(a.creation_date) - new Date(b.creation_date));
+            return res.status(200).json({
+                count: ascMovies.length,
+                movies: ascMovies
+            });
+        }
+        if (order == 'DESC') {
+            const ascMovies = movies.sort((a, b) => new Date(b.creation_date) - new Date(a.creation_date));
+            return res.status(200).json({
+                count: ascMovies.length,
+                movies: ascMovies
+            });
+        }
+
         res.status(200).json({
-            movies
+            count: movies.length,
+            movies: movies
         });
-    } catch (err) {
-        console.error(`Can not query character: ${err}`)
+    } catch (error) {
+        console.error(`Can not query movie: ${err}`)
         res.status(500).json({
             msg: 'Contact to administrator'
         });
