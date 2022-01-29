@@ -15,7 +15,9 @@ const router = Router();
 
 router.get('/query', [
     validateJWT,
-    //TODO:validate query
+    check('age', 'The value not is a number').if(check('age').exists()).isNumeric(),
+    check('movies', 'The value not is a number').if(check('movies').exists()).isNumeric(),
+    check('name', 'The value not is a string').if(check('name').exists()).isString(),
     validateErrors
 ], searchCharactersQuery);
 
@@ -37,15 +39,24 @@ router.post('/img/:id', [
 router.post('/', [
     validateJWT,
     check('name', 'The value is required').not().isEmpty(),
+    check('name', 'The value not is a string').if(check('name').exists()).isString(),
     check('age', 'The value is required').not().isEmpty(),
+    check('age', 'The value not is a number').if(check('age').exists()).isNumeric(),
     check('weight', 'The value is required').not().isEmpty(),
+    check('weight', 'The value not is a number').if(check('weight').exists()).isNumeric(),
     check('history', 'The value is required').not().isEmpty(),
-    check('movies', 'The value is required').not().isEmpty(),
+    check('history', 'The value not is a string').if(check('history').exists()).isString(),
+    check('movies', 'The value not is a string').if(check('movies').exists()).isString(),
     validateErrors
 ], createCharacter);
 
 router.put('/:id', [
     validateJWT,
+    check('name', 'The value not is a string').if(check('name').exists()).isString(),
+    check('age', 'The value not is a number').if(check('age').exists()).isNumeric(),
+    check('weight', 'The value not is a number').if(check('weight').exists()).isNumeric(),
+    check('history', 'The value not is a string').if(check('history').exists()).isString(),
+    check('movies', 'The value not is a string').if(check('movies').exists()).isString(),
     validateErrors
 ], updateCharacter);
 
