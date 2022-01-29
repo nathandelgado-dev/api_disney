@@ -221,7 +221,6 @@ const deleteMovie = async(req, res) => {
 }
 
 const searchMoviesQuery = async(req, res = response) => {
-    //TODO:get character with same name
     const { title = '', order } = req.query;
     const { genre = 0 } = req.query;
     try {
