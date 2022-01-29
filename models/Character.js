@@ -15,7 +15,7 @@ const Character = db.define('Character', {
         type: DataTypes.STRING
     },
     movies: {
-        type: DataTypes.STRING
+        type: DataTypes.BIGINT
     },
     img: {
         type: DataTypes.STRING

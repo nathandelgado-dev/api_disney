@@ -227,7 +227,7 @@ const deleteCharacter = async(req, res) => {
 }
 
 const searchCharactersQuery = async(req, res = response) => {
-    const { name = '', age = '', movies = '' } = req.query;
+    const { name = '', age = 0, movies = '', weight = 0 } = req.query;
 
     try {
         const characters = await Character.findAll({
@@ -235,18 +235,21 @@ const searchCharactersQuery = async(req, res = response) => {
                 [Op.or]: [
                     { name: name },
                     { age: age },
-                    { movies: movies }
+                    { movies: movies },
+                    { weight: weight }
                 ]
             }
-        })
+        });
 
-        if (!characters) {
+        if (!characters.length) {
             res.status(404).json({
-                msg: 'Not exist these query'
+                msg: 'Not exist characters with for these query'
             })
         }
+
         res.status(200).json({
-            characters
+            count: characters.length,
+            characters: characters
         });
     } catch (err) {
         console.error(`Can not query character: ${err}`)

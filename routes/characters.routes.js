@@ -16,6 +16,7 @@ const router = Router();
 router.get('/query', [
     validateJWT,
     check('age', 'The value not is a number').if(check('age').exists()).isNumeric(),
+    check('weight', 'The value not is a number').if(check('weight').exists()).isNumeric(),
     check('movies', 'The value not is a number').if(check('movies').exists()).isNumeric(),
     check('name', 'The value not is a string').if(check('name').exists()).isString(),
     validateErrors
