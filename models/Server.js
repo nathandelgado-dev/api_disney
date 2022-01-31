@@ -11,6 +11,7 @@ class Server {
             auth: '/api/auth',
             characters: '/api/characters',
             movies: '/api/movies',
+            notFound: '*'
         };
 
         this.dbConnection();
@@ -50,6 +51,7 @@ class Server {
         this.app.use(this.paths.auth, require('../routes/auth.routes'));
         this.app.use(this.paths.characters, require('../routes/characters.routes'));
         this.app.use(this.paths.movies, require('../routes/movies.routes'));
+        this.app.use(this.paths.notFound, require('../routes/notFound.routes'));
     }
 
     listen() {
